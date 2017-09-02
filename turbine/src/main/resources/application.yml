@@ -1,0 +1,55 @@
+info:
+  component: Turbine
+
+PREFIX:
+  
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+
+server:
+  port: 8989
+
+management:
+  port: 8990
+
+logging:
+  level:
+    root: INFO
+    com.netflix.discovery: 'OFF'
+    # org.springframework.integration: DEBUG
+
+---
+spring:
+  profiles: dev
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+  client:
+    serviceUrl:
+      defaultZone: ${smng.services.eureka-service.credentials.uri:http://127.0.0.1:8761}/eureka/
+
+#turbine:
+#  appConfig: customers,stores,productapi
+#  clusterNameExpression: 'default'
+
+#turbine:
+#  aggregator:
+#    clusterConfig: CUSTOMERS
+#  appConfig: customers
+
+---
+spring:
+  profiles: docker
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://10.16.156.36:8761/eureka/
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    prefer-ip-address: true
+    ip-address: 10.16.156.36

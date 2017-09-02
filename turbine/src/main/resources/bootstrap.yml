@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: turbine
+  profiles:
+    active: dev

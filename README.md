@@ -1,1 +1,1 @@
-# course-service
+# course management

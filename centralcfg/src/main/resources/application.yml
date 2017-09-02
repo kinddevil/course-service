@@ -1,0 +1,52 @@
+
+server:
+  port: 8888
+
+eureka:
+  instance:
+    hostname: s1
+#    preferIpAddress: true
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+#    serviceUrl:
+#      defaultZone: http://192.168.0.10:8762/eureka/
+#    register-with-eureka: true
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
+
+---
+
+spring:
+  profiles: dev
+  cloud:
+    config:
+      server:
+#        native:
+#          search-locations:
+        git:
+#          uri: file://${HOME}/project/cloud-config
+          uri: https://github.com/kinddevil/cloud-config
+          search-paths: cldconfig
+#          basedir: ${HOME}/project/course-service/cldconfig
+#          default-label: master
+#          clone-on-start: true
+#      label: dev
+
+---
+
+spring:
+  profiles: docker
+  cloud:
+    config:
+      server:
+#        native:
+#          search-locations:
+        git:
+#          uri: file://${HOME}/project/cloud-config
+          uri: https://github.com/kinddevil/cloud-config
+          search-paths: cldconfig
+#          basedir: ${HOME}/project/course-service/cldconfig
+#          default-label: master
+#          clone-on-start: true
+#      label: dev

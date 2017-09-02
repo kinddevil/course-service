@@ -1,0 +1,30 @@
+
+server:
+  port: 7979
+
+---
+spring:
+  profiles: dev
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    defaultZone: ${smng.services.eureka-service.credentials.uri:http://127.0.0.1:8761}/eureka/
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
+
+---
+spring:
+  profiles: docker
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    defaultZone: http://10.16.156.36:8761/eureka/
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
+  instance:
+    prefer-ip-address: true
+    ip-address: 10.16.156.36

@@ -1,0 +1,109 @@
+# https://stackoverflow.com/questions/42320756/oauth2-with-spring-boot-rest-application-cannot-access-resource-with-token
+security:
+  oauth2:
+    resource:
+      filter-order: 3
+
+server:
+  port: 9191
+  contextPath: /uua
+
+---
+spring:
+  profiles: dev
+  datasource:
+    schema: classpath:/sql/schema.sql
+    data: classpath:/sql/data.sql
+    url: jdbc:h2:mem:spring_boot_oauth2
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+    dataSourceClassName: org.h2.jdbcx.JdbcDataSource
+    dbcp2:
+      initial-size: 5
+      max-total: 10
+      pool-prepared-statements: true
+
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    database: H2
+    openInView: false
+    show_sql: true
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+
+server:
+  port: 9191
+  contextPath: /uua
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+---
+spring:
+  profiles: docker-local
+  datasource:
+     schema: classpath:/sql/schema.sql
+     data: classpath:/sql/data.sql
+     url: jdbc:mysql://localhost:3306/db?autoReconnect=true&useSSL=false
+     username: user
+     password: pass
+     driverClassName: com.mysql.jdbc.Driver
+#       tomcat:
+#         max-active: 5
+     dbcp2:
+       initial-size: 2
+       max-total: 10
+       pool-prepared-statements: true
+#         url: jdbc:mysql://localhost:3306/db
+#         driver-class-name: com.mysql.jdbc.Driver
+#         username: user
+#         password: pass
+
+  jpa:
+    show_sql: true
+    hibernate:
+      ddl-auto: none
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+---
+spring:
+  profiles: docker
+  datasource:
+     schema: classpath:/sql/schema.sql
+     data: classpath:/sql/data.sql
+     url: jdbc:mysql://10.16.156.36:3306/db?autoReconnect=true&useSSL=false
+     username: user
+     password: pass
+     driverClassName: com.mysql.jdbc.Driver
+#       tomcat:
+#         max-active: 5
+     dbcp2:
+       initial-size: 2
+       max-total: 10
+       pool-prepared-statements: true
+#         url: jdbc:mysql://localhost:3306/db
+#         driver-class-name: com.mysql.jdbc.Driver
+#         username: user
+#         password: pass
+
+  jpa:
+    show_sql: true
+    hibernate:
+      ddl-auto: none
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://10.16.156.36:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    ip-address: 10.16.156.36

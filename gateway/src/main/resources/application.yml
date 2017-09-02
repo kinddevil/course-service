@@ -1,0 +1,84 @@
+server:
+  port: 7070
+
+---
+spring:
+  profiles: dev
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+zuul:
+  routes:
+    users:
+      path: /test/**
+      serviceId: api-test
+      stripPrefix: false
+    oauth:
+      path: /uua/**
+      serviceId: oauth2
+#      sensitive-headers: Authorization,Cookie,Set-Cookie
+#      sensitiveHeaders: Access-Control-Allow-Origin
+      sensitiveHeaders:
+#      ignoredHeaders: Access-Control-Allow-Origin
+#      sensitiveHeader: Access-Control-Allow-Origin, Access-Control-Allow-Methods
+      stripPrefix: false
+  prefix: /api/v1
+  whitelist: /health_check,/uua/login,/uua/baseinfo,/uua/oauth/token,/uua/oauth/authorize,/uua/oauth/confirm_access
+
+security:
+  oauth2:
+    client:
+      accessTokenUri: http://localhost:9191/uua/oauth/token
+      userAuthorizationUri: http://localhost:9191/uua/oauth/authorize
+      clientId: base_course_app
+      clientSecret: secret
+      client-authentication-scheme: header
+    resource:
+      userInfoUri: http://localhost:9191/uua/user
+#      preferTokenInfo: false
+      filter-order: 3
+#  sessions: ALWAYS
+
+---
+spring:
+  profiles: docker
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://10.16.156.36:8761/eureka/
+  instance:
+    prefer-ip-address: true
+#    ip-address:
+
+zuul:
+  routes:
+    users:
+      path: /test/**
+      serviceId: api-test
+      stripPrefix: false
+    oauth:
+      path: /uua/**
+      serviceId: oauth2
+#      sensitive-headers: Authorization,Cookie,Set-Cookie
+      sensitiveHeaders:
+      stripPrefix: false
+  prefix: /api/v1
+  whitelist: /health_check,/uua/login,/uua/baseinfo,/uua/oauth/token,/uua/oauth/authorize,/uua/oauth/confirm_access
+
+security:
+  oauth2:
+    client:
+      accessTokenUri: http://10.16.156.36:9191/uua/oauth/token
+      userAuthorizationUri: http://10.16.156.36:9191/uua/oauth/authorize
+      clientId: base_course_app
+      clientSecret: secret
+      client-authentication-scheme: header
+    resource:
+      userInfoUri: http://10.16.156.36:9191/uua/user
+#      preferTokenInfo: false
+      filter-order: 3
+#  sessions: ALWAYS
