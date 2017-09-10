@@ -27,3 +27,5 @@ apis
 o2
 build
 out
+
+.gradle/
