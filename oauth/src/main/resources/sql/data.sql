@@ -19,8 +19,8 @@ INSERT INTO user_role (username, rolename) VALUES ('admin002', 'admin');
 INSERT INTO user_role (username, rolename) VALUES ('teacher001', 'teacher');
 INSERT INTO user_role (username, rolename) VALUES ('student001', 'student');
 
-INSERT INTO authority (name) VALUES ('ROLE_ADMIN');
-INSERT INTO authority (name) VALUES ('ROLE_USER');
+INSERT INTO authority (authority, name) VALUES ('ROLE_ADMIN', 'admin');
+INSERT INTO authority (authority, name) VALUES ('ROLE_USER', 'user');
 
 INSERT INTO user_authority (username,authority) VALUES ('student001', 'ROLE_USER');
 INSERT INTO user_authority (username,authority) VALUES ('teacher001', 'ROLE_USER');

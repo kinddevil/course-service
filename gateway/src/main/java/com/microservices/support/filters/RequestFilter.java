@@ -38,7 +38,14 @@ public class RequestFilter extends ZuulFilter {
         HttpServletRequest request = ctx.getRequest();
         // Map<String, List<String>> queryParams = new HashMap<>();
         String url = request.getRequestURL().toString();
-//        request.getUserPrincipal().getName();
+
+        Principal princepal = request.getUserPrincipal();
+
+        if (princepal != null) {
+            String username = request.getUserPrincipal().getName();
+            log.info("Add username to X-REQUEST-UN->", username);
+            ctx.addZuulRequestHeader("X-REQUEST-UN", username);
+        }
 
 //        ctx.addZuulRequestHeader("Authorization", request.getHeader("Authorization"));
         log.info(String.format("requestFilter... %s request to %s", request.getMethod(), request.getRequestURL().toString()));
