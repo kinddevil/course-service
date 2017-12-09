@@ -96,6 +96,7 @@ docker {
     baseImage = 'java:8'
 }
 
+// gradle buildDocker -Ppush
 task buildDocker(type: Docker, dependsOn: build) {
     push = project.hasProperty('push')
     addFile {
