@@ -4,6 +4,7 @@ import com.oauth.services.security.CustomAuthenticationEntryPoint;
 import com.oauth.services.security.CustomLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
@@ -133,6 +134,12 @@ public class OAuth2Configuration {
 //        }
 
         public DataSource dataSource() {
+//            DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+//            dataSourceBuilder.url(dbUrl);
+//            dataSourceBuilder.username(username);
+//            dataSourceBuilder.password(password);
+//            return dataSourceBuilder.build();
+
             final DriverManagerDataSource dataSource = new DriverManagerDataSource();
             dataSource.setDriverClassName(env.getProperty("spring.datasource.driverClassName"));
             dataSource.setUrl(env.getProperty("spring.datasource.url"));

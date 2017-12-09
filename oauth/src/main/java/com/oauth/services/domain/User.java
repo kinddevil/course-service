@@ -21,7 +21,25 @@ public class User {
     @Size(min = 0, max = 50)
     private String email;
 
+    private String name;
+
+    @Column(name = "school_id")
+    private Long schoolId;
+
+    @Column(name = "school_name")
+    private String schoolName;
+
     private boolean activated;
+
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     @Size(min = 0, max = 100)
     @Column(name = "activationkey")
@@ -37,6 +55,13 @@ public class User {
             joinColumns = @JoinColumn(name = "username"),
             inverseJoinColumns = @JoinColumn(name = "authority"))
     private Set<Authority> authorities;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "username"),
+            inverseJoinColumns = @JoinColumn(name = "rolename"))
+    private Set<Role> roles;
 
     public String getUsername() {
         return username;
@@ -94,6 +119,38 @@ public class User {
         this.authorities = authorities;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(Long schoolId) {
+        this.schoolId = schoolId;
+    }
+
+    public String getSchoolName() {
+        return schoolName;
+    }
+
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -120,7 +177,8 @@ public class User {
                 ", activated='" + activated + '\'' +
                 ", activationKey='" + activationKey + '\'' +
                 ", resetPasswordKey='" + resetPasswordKey + '\'' +
-                ", authorities=" + authorities +
+                ", authorities=" + authorities + '\'' +
+                ", roles=" + roles +
                 '}';
     }
 }

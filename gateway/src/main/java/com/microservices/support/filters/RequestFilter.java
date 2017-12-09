@@ -4,9 +4,11 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.*;
 
 /**
@@ -36,6 +38,7 @@ public class RequestFilter extends ZuulFilter {
         HttpServletRequest request = ctx.getRequest();
         // Map<String, List<String>> queryParams = new HashMap<>();
         String url = request.getRequestURL().toString();
+//        request.getUserPrincipal().getName();
 
 //        ctx.addZuulRequestHeader("Authorization", request.getHeader("Authorization"));
         log.info(String.format("requestFilter... %s request to %s", request.getMethod(), request.getRequestURL().toString()));

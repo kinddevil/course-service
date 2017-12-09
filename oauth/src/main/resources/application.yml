@@ -6,7 +6,11 @@ security:
 
 server:
   port: 9191
-  contextPath: /uua
+  contextPath: /uua/v1
+
+spring:
+  profiles:
+    active: docker-local
 
 ---
 spring:
@@ -49,7 +53,7 @@ spring:
   datasource:
      schema: classpath:/sql/schema.sql
      data: classpath:/sql/data.sql
-     url: jdbc:mysql://localhost:3306/db?autoReconnect=true&useSSL=false
+     url: jdbc:mysql://localhost:3306/cas?autoReconnect=true&useSSL=false
      username: user
      password: pass
      driverClassName: com.mysql.jdbc.Driver
@@ -80,7 +84,7 @@ spring:
   datasource:
      schema: classpath:/sql/schema.sql
      data: classpath:/sql/data.sql
-     url: jdbc:mysql://10.16.156.36:3306/db?autoReconnect=true&useSSL=false
+     url: jdbc:mysql://10.16.156.36:3306/cas?autoReconnect=true&useSSL=false
      username: user
      password: pass
      driverClassName: com.mysql.jdbc.Driver

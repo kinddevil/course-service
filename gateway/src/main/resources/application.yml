@@ -25,19 +25,19 @@ zuul:
 #      ignoredHeaders: Access-Control-Allow-Origin
 #      sensitiveHeader: Access-Control-Allow-Origin, Access-Control-Allow-Methods
       stripPrefix: false
-  prefix: /api/v1
-  whitelist: /health_check,/uua/login,/uua/baseinfo,/uua/oauth/token,/uua/oauth/authorize,/uua/oauth/confirm_access
+  prefix: /api
+  whitelist: /health_check,/uua/v*/login,/uua/v*/baseinfo,/uua/v*/oauth/token,/uua/v*/oauth/authorize,/uua/v*/oauth/confirm_access
 
 security:
   oauth2:
     client:
-      accessTokenUri: http://localhost:9191/uua/oauth/token
-      userAuthorizationUri: http://localhost:9191/uua/oauth/authorize
+      accessTokenUri: http://localhost:9191/uua/v1/oauth/token
+      userAuthorizationUri: http://localhost:9191/uua/v1/oauth/authorize
       clientId: base_course_app
       clientSecret: secret
       client-authentication-scheme: header
     resource:
-      userInfoUri: http://localhost:9191/uua/user
+      userInfoUri: http://localhost:9191/uua/v1/user
 #      preferTokenInfo: false
       filter-order: 3
 #  sessions: ALWAYS
@@ -66,19 +66,19 @@ zuul:
 #      sensitive-headers: Authorization,Cookie,Set-Cookie
       sensitiveHeaders:
       stripPrefix: false
-  prefix: /api/v1
-  whitelist: /health_check,/uua/login,/uua/baseinfo,/uua/oauth/token,/uua/oauth/authorize,/uua/oauth/confirm_access
+  prefix: /api
+  whitelist: /health_check,/uua/v*/login,/uua/v*/baseinfo,/uua/v*/oauth/token,/uua/v*/oauth/authorize,/uua/v*/oauth/confirm_access
 
 security:
   oauth2:
     client:
-      accessTokenUri: http://10.16.156.36:9191/uua/oauth/token
-      userAuthorizationUri: http://10.16.156.36:9191/uua/oauth/authorize
+      accessTokenUri: http://10.16.156.36:9191/uua/v1/oauth/token
+      userAuthorizationUri: http://10.16.156.36:9191/uua/v1/oauth/authorize
       clientId: base_course_app
       clientSecret: secret
       client-authentication-scheme: header
     resource:
-      userInfoUri: http://10.16.156.36:9191/uua/user
+      userInfoUri: http://10.16.156.36:9191/uua/v1/user
 #      preferTokenInfo: false
       filter-order: 3
 #  sessions: ALWAYS
