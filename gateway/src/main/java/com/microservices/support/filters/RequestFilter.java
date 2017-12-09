@@ -44,7 +44,7 @@ public class RequestFilter extends ZuulFilter {
         if (princepal != null) {
             String username = request.getUserPrincipal().getName();
             log.info("Add username to X-REQUEST-UN->", username);
-            ctx.addZuulRequestHeader("X-REQUEST-UN", username);
+            ctx.addZuulRequestHeader("X-REQUESTED-UN", username);
         }
 
 //        ctx.addZuulRequestHeader("Authorization", request.getHeader("Authorization"));
