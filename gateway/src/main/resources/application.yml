@@ -25,6 +25,12 @@ zuul:
 #      ignoredHeaders: Access-Control-Allow-Origin
 #      sensitiveHeader: Access-Control-Allow-Origin, Access-Control-Allow-Methods
       stripPrefix: false
+    advertising:
+      path: /advertising/**
+#      url: http://localhost:6767/
+      serviceId: cas-ads
+      stripPrefix: false
+
   prefix: /api
   whitelist: /health_check,/uua/v*/login,/uua/v*/baseinfo,/uua/v*/oauth/token,/uua/v*/oauth/authorize,/uua/v*/oauth/confirm_access
 
@@ -65,6 +71,11 @@ zuul:
       serviceId: oauth2
 #      sensitive-headers: Authorization,Cookie,Set-Cookie
       sensitiveHeaders:
+      stripPrefix: false
+    advertising:
+      path: /advertising/**
+#      url: http://localhost:6767/
+      serviceId: cas-ads
       stripPrefix: false
   prefix: /api
   whitelist: /health_check,/uua/v*/login,/uua/v*/baseinfo,/uua/v*/oauth/token,/uua/v*/oauth/authorize,/uua/v*/oauth/confirm_access

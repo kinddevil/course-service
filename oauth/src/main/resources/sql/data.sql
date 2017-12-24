@@ -6,8 +6,8 @@
 -- BCryptPasswordEncoder
 INSERT INTO user (username, name, type, email, password, activated) VALUES ('admin001', 'admin', 'admin', 'admin@mail.me', '$2a$10$qcbyEFYeVmHEYh78TZRHJe.FMSuBwUxmyAXZPEX5tOy6ayJmNSBnK', true);
 INSERT INTO user (username, name, type, school_id, school_name, email,  password, activated) VALUES ('admin002', 'admin2', 'school', 1, 'mock_school', 'admin2@mail.me', '$2a$10$qcbyEFYeVmHEYh78TZRHJe.FMSuBwUxmyAXZPEX5tOy6ayJmNSBnK', true);
-INSERT INTO user (username, name, type, school_id, school_name, email,  password, activated) VALUES ('teacher001', 'teacher', 'school', 1, 'mock_school', 'user@mail.me', '$2a$10$qcbyEFYeVmHEYh78TZRHJe.FMSuBwUxmyAXZPEX5tOy6ayJmNSBnK', true);
-INSERT INTO user (username, name, type, school_id, school_name, email,  password, activated) VALUES ('student001', 'student', 'school', 1, 'mock_school', 'student@abc.com', '$2a$10$qcbyEFYeVmHEYh78TZRHJe.FMSuBwUxmyAXZPEX5tOy6ayJmNSBnK', true);
+INSERT INTO user (username, name, type, school_id, school_name, email,  password, activated) VALUES ('teacher001', 'teacher', 'teacher', 1, 'mock_school', 'user@mail.me', '$2a$10$qcbyEFYeVmHEYh78TZRHJe.FMSuBwUxmyAXZPEX5tOy6ayJmNSBnK', true);
+INSERT INTO user (username, name, type, school_id, school_name, email,  password, activated) VALUES ('student001', 'student', 'student', 1, 'mock_school', 'student@abc.com', '$2a$10$qcbyEFYeVmHEYh78TZRHJe.FMSuBwUxmyAXZPEX5tOy6ayJmNSBnK', true);
 
 INSERT INTO role (rolename, full_name) VALUES ('superadmin', '系统管理员');
 INSERT INTO role (rolename, full_name) VALUES ('admin', '学校管理员');
