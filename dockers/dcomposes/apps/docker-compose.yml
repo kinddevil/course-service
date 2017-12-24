@@ -1,0 +1,46 @@
+version: '3'
+services:
+#  db:
+#    image: "mysql/mysql-server:latest"
+#    expose:
+#     - "3306"
+#    ports:
+#     - "3306:3306"
+#    environment:
+#     MYSQL_ROOT_PASSWORD: root
+#     MYSQL_DATABASE: 'cas'
+#     MYSQL_USER: 'user'
+#     MYSQL_PASSWORD: 'pass'
+#  mq:
+#    image: "rabbitmq:latest"
+#    expose:
+#      - "5672"
+#      - "15672"
+#    ports:
+#      - "5672:5672"
+#      - "15672:15672"
+#    hostname: rabbitmq
+  discovery:
+    image: "coursemnt/discovery:1.0-SNAPSHOT"
+    expose:
+      - "8761"
+    ports:
+      - "8761:8761"
+  oauth:
+    image: "coursemnt/oauth:1.0-SNAPSHOT"
+    expose:
+      - "9191"
+    ports:
+      - "9191:9191"
+  turbine:
+    image: "coursemnt/turbine:1.0-SNAPSHOT"
+    expose:
+      - "8989"
+    ports:
+      - "8989:8989"
+  monitor:
+    image: "coursemnt/monitor:1.0-SNAPSHOT"
+    expose:
+      - "7979"
+    ports:
+      - "7979:7979"

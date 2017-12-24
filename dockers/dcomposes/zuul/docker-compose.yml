@@ -1,0 +1,8 @@
+version: '3'
+services:
+  gateway:
+    image: "coursemnt/gateway:1.0-SNAPSHOT"
+    expose:
+      - "7979"
+    ports:
+      - "80:7070"
