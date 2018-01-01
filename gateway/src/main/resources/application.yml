@@ -30,6 +30,11 @@ zuul:
 #      url: http://localhost:6767/
       serviceId: cas-ads
       stripPrefix: false
+    schools:
+      path: /schools/**
+#      url: http://localhost:6767/
+      serviceId: cas-schools
+      stripPrefix: false
 
   prefix: /api
   whitelist: /health_check,/uua/v*/login,/uua/v*/baseinfo,/uua/v*/oauth/token,/uua/v*/oauth/authorize,/uua/v*/oauth/confirm_access
@@ -62,7 +67,7 @@ eureka:
 
 zuul:
   routes:
-    users:
+    users-test:
       path: /test/**
       serviceId: api-test
       stripPrefix: false
@@ -76,6 +81,45 @@ zuul:
       path: /advertising/**
 #      url: http://localhost:6767/
       serviceId: cas-ads
+      stripPrefix: false
+    schools: # schools and campus
+      path: /schools/**
+#      url: http://localhost:6767/
+      serviceId: cas-schools
+      stripPrefix: false
+    dicts: # dicts and sys-dicts
+      path: /dicts/**
+#      url: http://localhost:6767/
+      serviceId: cas-dicts
+      stripPrefix: false
+    users: # user role group
+      path: /users/**
+#      url: http://localhost:6767/
+      serviceId: cas-users
+      stripPrefix: false
+    classes: # class and arrangement
+      path: /classes/**
+      serviceId: cas-classes
+      stripPrefix: false
+    courses:
+      path: /courses/**
+      serviceId: cas-courses
+      stripPrefix: false
+    todos:
+      path: /todos/**
+      serviceId: cas-todos
+      stripPrefix: false
+    announcements:
+      path: /announcements/**
+      serviceId: cas-announcements
+      stripPrefix: false
+    payments:
+      path: /payments/**
+      serviceId: cas-payments
+      stripPrefix: false
+    logs: # audit log, operation log, payment log etc.
+      path: /payments/**
+      serviceId: cas-payments
       stripPrefix: false
   prefix: /api
   whitelist: /health_check,/uua/v*/login,/uua/v*/baseinfo,/uua/v*/oauth/token,/uua/v*/oauth/authorize,/uua/v*/oauth/confirm_access
