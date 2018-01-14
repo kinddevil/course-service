@@ -45,6 +45,11 @@ zuul:
 #      url: http://localhost:6767/
       serviceId: cas-users
       stripPrefix: false
+    roles:
+      path: /roles/**
+#      url: http://localhost:6767/
+      serviceId: cas-roles
+      stripPrefix: false
     classes: # class and arrangement
       path: /classes/**
       serviceId: cas-classes
@@ -137,6 +142,11 @@ zuul:
       path: /users/**
 #      url: http://localhost:6767/
       serviceId: cas-users
+      stripPrefix: false
+    roles:
+      path: /roles/**
+#      url: http://localhost:6767/
+      serviceId: cas-roles
       stripPrefix: false
     classes: # class and arrangement
       path: /classes/**
