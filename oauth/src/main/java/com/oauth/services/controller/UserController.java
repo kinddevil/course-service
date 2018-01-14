@@ -8,8 +8,12 @@ import com.oauth.services.security.UserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +40,10 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+//    @Qualifier("oauth2ClientContext")
+//    @Autowired
+//    private OAuth2ClientContext oAuth2ClientContext;
+
 //    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
@@ -49,6 +57,8 @@ public class UserController {
     public User getUserDetail(Principal currentUser, @RequestHeader(value="Authorization") String authorizationHeader) {
         log.info(String.format("auth header is -> %s", authorizationHeader));
         String username = currentUser.getName();
+
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 //        List<Role> roles = entityManager.createQuery(
 //                "select r from Role r left join UserRole ur on r.name = ur.roleid where ur.userid = :username")

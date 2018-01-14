@@ -39,6 +39,11 @@ public class RequestAuthFilter extends OncePerRequestFilter {
             if (response.getHeader("Access-Control-Request-Method") == null)
                 hsr.setHeader("Access-Control-Request-Method", request.getHeader("Access-Control-Request-Method"));
 
+            if (response.getHeader("Access-Control-Allow-Methods") == null) {
+                String method = response.getHeader("Access-Control-Request-Method");
+                hsr.setHeader("Access-Control-Allow-Methods", method);
+            }
+
             hsr.setStatus(200);
             return;
         }

@@ -44,6 +44,7 @@ public class ResponseFilter extends ZuulFilter {
             System.out.println(headerName + " " + res.getHeader(headerName));
         }
         log.info(String.format("responseFilter... %s request to %s", request.getMethod(), request.getRequestURL().toString()));
+        log.info(String.format("remote addr... %s", request.getRemoteAddr()));
 
         // add cors header
         if (res.getHeader("Access-Control-Allow-Credentials") == null)
@@ -54,6 +55,11 @@ public class ResponseFilter extends ZuulFilter {
         }
 //        if (res.getHeader("Access-Control-Allow-Origin") == null)
 //            ctx.addZuulResponseHeader("Access-Control-Allow-Origin", "*");
+
+//        if (res.getHeader("Access-Control-Allow-Methods") == null) {
+//            String method = res.getHeader("Access-Control-Request-Method");
+//            ctx.addZuulResponseHeader("Access-Control-Allow-Methods", method);
+//        }
 
         //add headers to disable browser caceh
         if (res.getHeader("Cache-Control") == null)

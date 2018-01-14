@@ -27,6 +27,10 @@ INSERT INTO user_authority (username,authority) VALUES ('teacher001', 'ROLE_USER
 INSERT INTO user_authority (username,authority) VALUES ('admin001', 'ROLE_ADMIN');
 INSERT INTO user_authority (username,authority) VALUES ('admin002', 'ROLE_ADMIN');
 
+-- authority: admin user
+-- scope: read,write,
+-- client: need to confirm apis 1. admin 2. user with rw 3. user with r
+
 INSERT INTO oauth_client_details
     (client_id, client_secret, scope, authorized_grant_types,
     web_server_redirect_uri, authorities, access_token_validity,
