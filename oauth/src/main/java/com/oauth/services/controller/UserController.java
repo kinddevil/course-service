@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
@@ -49,6 +50,10 @@ public class UserController {
     @ResponseBody
     public Principal getUserInfo(Principal currentUser, @RequestHeader(value="Authorization") String authorizationHeader) {
         log.info(String.format("auth header is -> %s", authorizationHeader));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        for (GrantedAuthority a : auth.getAuthorities()) {
+            log.info(a.getAuthority());
+        }
         return currentUser;
     }
 

@@ -63,6 +63,13 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "rolename"))
     private Set<Role> roles;
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_privilege",
+            joinColumns = @JoinColumn(name = "username"),
+            inverseJoinColumns = @JoinColumn(name = "privilegeid"))
+    private Set<Privilege> privileges;
+
     public String getUsername() {
         return username;
     }
@@ -161,6 +168,14 @@ public class User {
         if (!username.equals(user.username)) return false;
 
         return true;
+    }
+
+    public Set<Privilege> getPrivileges() {
+        return privileges;
+    }
+
+    public void setPrivileges(Set<Privilege> privileges) {
+        this.privileges = privileges;
     }
 
     @Override

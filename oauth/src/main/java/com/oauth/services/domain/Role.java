@@ -1,10 +1,8 @@
 package com.oauth.services.domain;
 
-import org.hibernate.validator.constraints.Email;
-
-import javax.persistence.*;
-import javax.validation.constraints.Size;
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 public class Role {

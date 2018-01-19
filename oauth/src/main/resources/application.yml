@@ -51,8 +51,8 @@ eureka:
 spring:
   profiles: docker-local
   datasource:
-     schema: classpath:/sql/schema.sql
-     data: classpath:/sql/data.sql
+#     schema: classpath:/sql/schema.sql
+#     data: classpath:/sql/data.sql
      url: jdbc:mysql://localhost:3306/cas?autoReconnect=true&useSSL=false
      username: user
      password: pass

@@ -11,8 +11,8 @@ INSERT INTO user (username, name, type, school_id, school_name, email,  password
 
 INSERT INTO role (rolename, full_name) VALUES ('superadmin', '系统管理员');
 INSERT INTO role (rolename, full_name) VALUES ('admin', '学校管理员');
-INSERT INTO role (rolename, full_name) VALUES ('teacher', 'teacher');
-INSERT INTO role (rolename, full_name) VALUES ('student', 'student');
+INSERT INTO role (rolename, full_name) VALUES ('teacher', '教师');
+INSERT INTO role (rolename, full_name) VALUES ('student', '学生');
 
 INSERT INTO user_role (username, rolename) VALUES ('admin001', 'superadmin');
 INSERT INTO user_role (username, rolename) VALUES ('admin002', 'admin');
@@ -44,5 +44,5 @@ INSERT INTO oauth_client_details
     web_server_redirect_uri, authorities, access_token_validity,
     refresh_token_validity, additional_information, autoapprove)
 VALUES
-    ('base_course_app', 'secret', 'foo,read,write',
+    ('base_course_app', 'secret', 'read,write',
     'password,authorization_code,refresh_token', null, 'ROLE_ADMIN,ROLE_USER', 36000, 36000, null, true);
