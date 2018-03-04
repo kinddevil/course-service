@@ -51,6 +51,8 @@ public class UserDetailsService implements org.springframework.security.core.use
             grantedAuthorities.add(grantedAuthority);
         }
 
+        // TODO login trigger
+
         return new org.springframework.security.core.userdetails.User(userFromDatabase.getUsername(), userFromDatabase.getPassword(), grantedAuthorities);
 
     }

@@ -4,10 +4,10 @@
 -- INSERT INTO user (username,email, password, activated) VALUES ('rajith', 'rajith@abc.com', 'd6dfa9ff45e03b161e7f680f35d90d5ef51d243c2a8285aa7e11247bc2c92acde0c2bb626b1fac74', true);
 
 -- BCryptPasswordEncoder
-INSERT INTO user (username, name, type, email, password, activated) VALUES ('admin001', 'admin', 'admin', 'admin@mail.me', '$2a$10$qcbyEFYeVmHEYh78TZRHJe.FMSuBwUxmyAXZPEX5tOy6ayJmNSBnK', true);
-INSERT INTO user (username, name, type, school_id, school_name, email,  password, activated) VALUES ('admin002', 'admin2', 'school', 1, 'mock_school', 'admin2@mail.me', '$2a$10$qcbyEFYeVmHEYh78TZRHJe.FMSuBwUxmyAXZPEX5tOy6ayJmNSBnK', true);
-INSERT INTO user (username, name, type, school_id, school_name, email,  password, activated) VALUES ('teacher001', 'teacher', 'teacher', 1, 'mock_school', 'user@mail.me', '$2a$10$qcbyEFYeVmHEYh78TZRHJe.FMSuBwUxmyAXZPEX5tOy6ayJmNSBnK', true);
-INSERT INTO user (username, name, type, school_id, school_name, email,  password, activated) VALUES ('student001', 'student', 'student', 1, 'mock_school', 'student@abc.com', '$2a$10$qcbyEFYeVmHEYh78TZRHJe.FMSuBwUxmyAXZPEX5tOy6ayJmNSBnK', true);
+INSERT INTO user (username, name, type, email, password, activated, is_deleted) VALUES ('admin001', 'admin', 'admin', 'admin@mail.me', '$2a$10$qcbyEFYeVmHEYh78TZRHJe.FMSuBwUxmyAXZPEX5tOy6ayJmNSBnK', true, false);
+INSERT INTO user (username, name, type, school_id, school_name, email,  password, activated, is_deleted) VALUES ('admin002', 'admin2', 'school', 1, 'mock_school', 'admin2@mail.me', '$2a$10$qcbyEFYeVmHEYh78TZRHJe.FMSuBwUxmyAXZPEX5tOy6ayJmNSBnK', true, false);
+INSERT INTO user (username, name, type, school_id, school_name, email,  password, activated, is_deleted) VALUES ('teacher001', 'teacher', 'teacher', 1, 'mock_school', 'user@mail.me', '$2a$10$qcbyEFYeVmHEYh78TZRHJe.FMSuBwUxmyAXZPEX5tOy6ayJmNSBnK', true, false);
+INSERT INTO user (username, name, type, school_id, school_name, email,  password, activated, is_deleted) VALUES ('student001', 'student', 'student', 1, 'mock_school', 'student@abc.com', '$2a$10$qcbyEFYeVmHEYh78TZRHJe.FMSuBwUxmyAXZPEX5tOy6ayJmNSBnK', true, false);
 
 INSERT INTO role (rolename, full_name) VALUES ('superadmin', '系统管理员');
 INSERT INTO role (rolename, full_name) VALUES ('admin', '学校管理员');

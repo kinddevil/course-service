@@ -79,6 +79,10 @@ zuul:
 #      url: http://localhost:6767/
       serviceId: cas-assets
       stripPrefix: false
+    calendar:
+      path: /calendar/**
+      serviceId: cas-calendar
+      stripPrefix: false
 
   prefix: /api
   whitelist: /health_check,/uua/v*/login,/uua/v*/baseinfo,/uua/v*/oauth/token,/uua/v*/oauth/authorize,/uua/v*/oauth/confirm_access
@@ -176,6 +180,10 @@ zuul:
       path: /assets/**
 #      url: http://localhost:6767/
       serviceId: cas-assets
+      stripPrefix: false
+    calendar:
+      path: /calendar/**
+      serviceId: cas-calendar
       stripPrefix: false
   prefix: /api
   whitelist: /health_check,/uua/v*/login,/uua/v*/baseinfo,/uua/v*/oauth/token,/uua/v*/oauth/authorize,/uua/v*/oauth/confirm_access
