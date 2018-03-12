@@ -54,6 +54,10 @@ zuul:
       path: /classes/**
       serviceId: cas-classes
       stripPrefix: false
+    classrooms: # classroom
+      path: /classrooms/**
+      serviceId: cas-classrooms
+      stripPrefix: false
     courses:
       path: /courses/**
       serviceId: cas-courses
@@ -155,6 +159,10 @@ zuul:
     classes: # class and arrangement
       path: /classes/**
       serviceId: cas-classes
+      stripPrefix: false
+    classrooms: # classroom
+      path: /classrooms/**
+      serviceId: cas-classrooms
       stripPrefix: false
     courses:
       path: /courses/**
