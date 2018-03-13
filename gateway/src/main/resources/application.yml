@@ -87,6 +87,10 @@ zuul:
       path: /calendar/**
       serviceId: cas-calendar
       stripPrefix: false
+    preselect:
+      path: /preselect/**
+      serviceId: cas-preselect
+      stripPrefix: false
 
   prefix: /api
   whitelist: /health_check,/uua/v*/login,/uua/v*/baseinfo,/uua/v*/oauth/token,/uua/v*/oauth/authorize,/uua/v*/oauth/confirm_access
@@ -192,6 +196,10 @@ zuul:
     calendar:
       path: /calendar/**
       serviceId: cas-calendar
+      stripPrefix: false
+    preselect:
+      path: /preselect/**
+      serviceId: cas-preselect
       stripPrefix: false
   prefix: /api
   whitelist: /health_check,/uua/v*/login,/uua/v*/baseinfo,/uua/v*/oauth/token,/uua/v*/oauth/authorize,/uua/v*/oauth/confirm_access
