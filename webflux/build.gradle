@@ -1,0 +1,130 @@
+group 'com.school.platform'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    ext {
+        springBootVersion = '2.0.0.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE"
+        classpath 'se.transmode.gradle:gradle-docker:1.2'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'application'
+apply plugin: 'docker'
+apply plugin: "io.spring.dependency-management"
+
+jar {
+    baseName = 'course-service-oauthsp2'
+    version = '0.0.1-SNAPSHOT'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url 'https://repo.spring.io/libs-snapshot' }
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+    maven {
+        url 'http://maven.springframework.org/release'
+    }
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+    maven { url "http://packages.confluent.io/maven" }
+}
+
+//dependencyManagement {
+//    imports {
+//        mavenBom 'org.springframework.cloud:spring-cloud-netflix:2.0.0.M7'
+//    }
+//}
+
+dependencies {
+//    not suppoorted yet
+//    compile("org.springframework.cloud:spring-cloud-starter-eureka-server")
+//    compile("org.springframework.boot:spring-boot-starter-web")
+    compile('org.springframework.boot:spring-boot-starter-webflux')
+
+//    compile('org.springframework.security:spring-security-core')
+//    compile('org.springframework.security:spring-security-config')
+
+//    not supported yet
+//    compile("org.springframework.boot:spring-boot-starter-security")
+//    compile("org.springframework.security.oauth:spring-security-oauth2")
+
+    compile('org.springframework.security:spring-security-web')
+//    compile('org.springframework.security:spring-security-webflux')
+
+
+    compile("io.netty:netty-buffer")
+    compile("io.projectreactor.ipc:reactor-netty")
+
+    compile("javax.el:javax.el-api:3.0.0")
+
+//    conflict with java9
+//    compileOnly('org.projectlombok:lombok')
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.0'
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+                'Implementation-Version': version,
+                'Main-Class': project.group + '.Main'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath 'se.transmode.gradle:gradle-docker:1.2'
+    }
+}
+
+distDocker {
+    exposePort 9191
+    setEnvironment 'JAVA_OPTS', '-Dspring.profiles.active=docker'
+    description 'Central config cluster'
+}
+
+docker {
+    group = 'coursemnt'
+    maintainer = 'Someone <someone@gmail.com>'
+    baseImage = 'java:8'
+}
+
+task buildDocker(type: Docker, dependsOn: build) {
+    push = project.hasProperty('push')
+    addFile {
+        from jar
+        rename {'app.jar'}
+    }
+    setEnvironment('_JAVA_OPTIONS','-Dspring.profiles.active=docker')
+    defaultCommand(['java', '-jar', 'app.jar'])
+}
+
+task getHomeDir << {
+    println gradle.gradleHomeDir
+}
