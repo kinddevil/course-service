@@ -1,0 +1,6 @@
+
+
+server:
+  port: 9191
+  servlet:
+    context-path: /uua/v2
