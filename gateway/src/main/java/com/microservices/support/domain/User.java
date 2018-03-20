@@ -1,4 +1,4 @@
-package com.oauth.services.domain;
+package com.microservices.support.domain;
 
 import org.hibernate.validator.constraints.Email;
 
@@ -56,27 +56,6 @@ public class User {
     @Column(name = "resetpasswordkey")
     private String resetPasswordKey;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_authority",
-            joinColumns = @JoinColumn(name = "username"),
-            inverseJoinColumns = @JoinColumn(name = "authority"))
-    private Set<Authority> authorities;
-
-    @ManyToMany
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "username"),
-            inverseJoinColumns = @JoinColumn(name = "rolename"))
-    private Set<Role> roles;
-
-    @ManyToMany
-    @JoinTable(
-            name = "user_privilege",
-            joinColumns = @JoinColumn(name = "username"),
-            inverseJoinColumns = @JoinColumn(name = "privilegeid"))
-    private Set<Privilege> privileges;
-
     public String getUsername() {
         return username;
     }
@@ -125,14 +104,6 @@ public class User {
         this.resetPasswordKey = resetPasswordKey;
     }
 
-    public Set<Authority> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(Set<Authority> authorities) {
-        this.authorities = authorities;
-    }
-
     public String getName() {
         return name;
     }
@@ -157,14 +128,6 @@ public class User {
         this.schoolName = schoolName;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -175,14 +138,6 @@ public class User {
         if (!username.equals(user.username)) return false;
 
         return true;
-    }
-
-    public Set<Privilege> getPrivileges() {
-        return privileges;
-    }
-
-    public void setPrivileges(Set<Privilege> privileges) {
-        this.privileges = privileges;
     }
 
     public Integer getLoadCounter() {
@@ -210,13 +165,11 @@ public class User {
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +
-//                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", activated='" + activated + '\'' +
                 ", activationKey='" + activationKey + '\'' +
                 ", resetPasswordKey='" + resetPasswordKey + '\'' +
-                ", authorities=" + authorities + '\'' +
-                ", roles=" + roles +
                 '}';
     }
 }
+

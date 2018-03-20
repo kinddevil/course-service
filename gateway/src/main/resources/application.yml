@@ -3,7 +3,30 @@ server:
 
 ---
 spring:
-  profiles: dev
+  profiles: docker-local
+  datasource:
+#     schema: classpath:/sql/schema.sql
+#     data: classpath:/sql/data.sql
+     url: jdbc:mysql://localhost:3306/cas?autoReconnect=true&useSSL=false
+     username: user
+     password: pass
+     driverClassName: com.mysql.jdbc.Driver
+#       tomcat:
+#         max-active: 5
+     dbcp2:
+       initial-size: 2
+       max-total: 10
+       pool-prepared-statements: true
+#         url: jdbc:mysql://localhost:3306/db
+#         driver-class-name: com.mysql.jdbc.Driver
+#         username: user
+#         password: pass
+
+  jpa:
+    show_sql: true
+    hibernate:
+      ddl-auto: none
+
 
 eureka:
   client:
@@ -121,6 +144,28 @@ security:
 ---
 spring:
   profiles: docker
+  datasource:
+#     schema: classpath:/sql/schema.sql
+#     data: classpath:/sql/data.sql
+     url: jdbc:mysql://10.16.156.36:3306/cas?autoReconnect=true&useSSL=false
+     username: user
+     password: pass
+     driverClassName: com.mysql.jdbc.Driver
+#       tomcat:
+#         max-active: 5
+     dbcp2:
+       initial-size: 2
+       max-total: 10
+       pool-prepared-statements: true
+#         url: jdbc:mysql://localhost:3306/db
+#         driver-class-name: com.mysql.jdbc.Driver
+#         username: user
+#         password: pass
+
+  jpa:
+    show_sql: true
+    hibernate:
+      ddl-auto: none
 
 eureka:
   client:

@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -30,6 +31,7 @@ public class UserDetailsService implements org.springframework.security.core.use
     public UserDetails loadUserByUsername(final String login) {
 
         log.debug("Authenticating {}", login);
+        log.info("Authenticating... {}", login);
         String lowercaseLogin = login.toLowerCase();
 
         User userFromDatabase;
@@ -51,7 +53,11 @@ public class UserDetailsService implements org.springframework.security.core.use
             grantedAuthorities.add(grantedAuthority);
         }
 
-        // TODO login trigger
+        // login trigger
+        Integer currentCounter = userFromDatabase.getLoadCounter();
+        userFromDatabase.setLoadCounter(currentCounter == null ? 1 : currentCounter + 1);
+        userFromDatabase.setLastLoad(new Timestamp(System.currentTimeMillis()));
+//        userRepository.saveAndFlush(userFromDatabase);
 
         return new org.springframework.security.core.userdetails.User(userFromDatabase.getUsername(), userFromDatabase.getPassword(), grantedAuthorities);
 
