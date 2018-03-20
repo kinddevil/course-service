@@ -91,7 +91,14 @@ zuul:
       path: /preselect/**
       serviceId: cas-preselect
       stripPrefix: false
-
+    contracts:
+      path: /contracts/**
+      serviceId: cas-contracts
+      stripPrefix: false
+    expenses:
+      path: /expenses/**
+      serviceId: cas-expenses
+      stripPrefix: false
   prefix: /api
   whitelist: /health_check,/uua/v*/login,/uua/v*/baseinfo,/uua/v*/oauth/token,/uua/v*/oauth/authorize,/uua/v*/oauth/confirm_access
 
@@ -200,6 +207,14 @@ zuul:
     preselect:
       path: /preselect/**
       serviceId: cas-preselect
+      stripPrefix: false
+    contracts:
+      path: /contracts/**
+      serviceId: cas-contracts
+      stripPrefix: false
+    expenses:
+      path: /expenses/**
+      serviceId: cas-expenses
       stripPrefix: false
   prefix: /api
   whitelist: /health_check,/uua/v*/login,/uua/v*/baseinfo,/uua/v*/oauth/token,/uua/v*/oauth/authorize,/uua/v*/oauth/confirm_access
