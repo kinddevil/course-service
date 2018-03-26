@@ -19,6 +19,7 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
+apply plugin: 'maven'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'application'
 apply plugin: 'docker'
@@ -42,6 +43,13 @@ repositories {
     maven { url "http://packages.confluent.io/maven" }
 }
 
+//configure(allprojects) {
+//    apply plugin: 'propdeps'
+//    apply plugin: 'propdeps-maven'
+//    apply plugin: 'propdeps-idea'
+//    apply plugin: 'propdeps-eclipse'
+//}
+
 dependencyManagement {
     imports {
         mavenBom 'org.springframework.cloud:spring-cloud-netflix:1.3.1.RELEASE'
@@ -58,6 +66,9 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.security.oauth:spring-security-oauth2")
     compile("com.h2database:h2")
+
+//    provided 'org.projectlombok:lombok:1.16.20'
+    compileOnly 'org.projectlombok:lombok:1.16.20'
 
     runtime("mysql:mysql-connector-java")
 

@@ -2,6 +2,8 @@ package com.oauth.services.security;
 
 import com.oauth.services.domain.Authority;
 import com.oauth.services.domain.User;
+import com.oauth.services.domain.UserAudit;
+import com.oauth.services.repository.UserAuditRepository;
 import com.oauth.services.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,14 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserAuditRepository userAuditRepository;
+
+    private enum AUDIT_TYPE {
+        LOGIN,
+        LOGOUT
+    }
 
     @Override
     @Transactional
@@ -54,10 +64,21 @@ public class UserDetailsService implements org.springframework.security.core.use
         }
 
         // login trigger
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+
+        UserAudit userAudit = UserAudit.builder().userName(userFromDatabase.getUsername())
+                .userType(userFromDatabase.getType())
+                .schoolId(userFromDatabase.getSchoolId())
+                .schoolName(userFromDatabase.getSchoolName())
+                .actionTime(currentTime)
+                .actionType(AUDIT_TYPE.LOGIN.toString())
+                .build();
+        userAuditRepository.save(userAudit);
+
         Integer currentCounter = userFromDatabase.getLoadCounter();
         userFromDatabase.setLoadCounter(currentCounter == null ? 1 : currentCounter + 1);
-        userFromDatabase.setLastLoad(new Timestamp(System.currentTimeMillis()));
-//        userRepository.saveAndFlush(userFromDatabase);
+        userFromDatabase.setLastLoad(currentTime);
+        userRepository.save(userFromDatabase);
 
         return new org.springframework.security.core.userdetails.User(userFromDatabase.getUsername(), userFromDatabase.getPassword(), grantedAuthorities);
 
