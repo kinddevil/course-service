@@ -425,9 +425,12 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cas`.`user_audit` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `user_id` BIGINT NOT NULL,
-  `login_time` TIMESTAMP NULL,
-  `logout_time` TIMESTAMP NULL,
+  `user_name` VARCHAR(512) NULL,
+  `user_type` VARCHAR(128) NULL,
+  `school_id` BIGINT NULL,
+  `school_name` VARCHAR(1024) NULL,
+  `action_time` TIMESTAMP NULL,
+  `action_type` VARCHAR(128) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -474,7 +477,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `cas`.`oauth_access_token` (
   `token_id` VARCHAR(256) NOT NULL,
   `token` BLOB NULL,
-  `authentication_id` VARCHAR(256) NULL,
+  `authentication_id` VARCHAR(256) NULL UNIQUE ,
   `user_name` TEXT NULL,
   `client_id` VARCHAR(256) NULL,
   `authentication` BLOB NULL,
