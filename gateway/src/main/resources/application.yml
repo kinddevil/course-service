@@ -29,6 +29,11 @@ spring:
 
   redis:
     host: localhost
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+
 #    database: 0
 #    port: 6379
 #    cluster:
@@ -130,7 +135,7 @@ zuul:
       serviceId: cas-expenses
       stripPrefix: false
   prefix: /api
-  whitelist: /health_check,/uua/v*/login,/uua/v*/baseinfo,/uua/v*/oauth/token,/uua/v*/oauth/authorize,/uua/v*/oauth/confirm_access
+  whitelist: /health_check,/uua/v*/login,/uua/v*/baseinfo,/uua/v*/oauth/token,/uua/v*/oauth/authorize,/uua/v*/oauth/confirm_access,/advertising/v*/publicads
 
 security:
   oauth2:
@@ -173,6 +178,13 @@ spring:
     show_sql: true
     hibernate:
       ddl-auto: none
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+
+  redis:
+    host: localhost
 
 eureka:
   client:
@@ -181,6 +193,7 @@ eureka:
   instance:
     prefer-ip-address: true
 #    ip-address:
+
 
 zuul:
   routes:
@@ -269,7 +282,7 @@ zuul:
       serviceId: cas-expenses
       stripPrefix: false
   prefix: /api
-  whitelist: /health_check,/uua/v*/login,/uua/v*/baseinfo,/uua/v*/oauth/token,/uua/v*/oauth/authorize,/uua/v*/oauth/confirm_access
+  whitelist: /health_check,/uua/v*/login,/uua/v*/baseinfo,/uua/v*/oauth/token,/uua/v*/oauth/authorize,/uua/v*/oauth/confirm_access,/advertising/v*/publicads
 
 security:
   oauth2:
@@ -283,4 +296,5 @@ security:
       userInfoUri: http://10.16.156.36:9191/uua/v1/user
 #      preferTokenInfo: false
       filter-order: 3
+
 #  sessions: ALWAYS

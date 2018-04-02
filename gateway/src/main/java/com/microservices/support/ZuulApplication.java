@@ -1,12 +1,21 @@
 package com.microservices.support;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.microservices.support.config.SystemConfig;
+import com.microservices.support.domain.PermissionInfo;
 import com.microservices.support.domain.RAdmin;
+import com.microservices.support.domain.RoleDicts;
 import com.microservices.support.filters.ErrorFilter;
 import com.microservices.support.filters.RequestFilter;
 import com.microservices.support.filters.ResponseFilter;
 import com.microservices.support.filters.RouteFilter;
 import com.microservices.support.repository.RAdminRepository;
+import com.microservices.support.workers.AsyncExecutor;
+import com.microservices.support.workers.AsyncTask;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.FactoryBeanNotInitializedException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +35,7 @@ import org.springframework.cloud.netflix.zuul.filters.ProxyRequestHelper;
 import org.springframework.cloud.netflix.zuul.filters.ZuulProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,6 +64,13 @@ public class ZuulApplication extends SpringBootServletInitializer implements Emb
 
     @Autowired
     private RAdminRepository rAdminRepository;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    private static Gson gson = new Gson();
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AsyncTask.class);
 
     @Override
     public void customize(ConfigurableEmbeddedServletContainer container) {
@@ -114,8 +131,14 @@ public class ZuulApplication extends SpringBootServletInitializer implements Emb
         return new ErrorFilter();
     }
 
+    @Bean
+    public AsyncExecutor asyncExecutor() {
+        return new AsyncExecutor();
+    }
+
     @RequestMapping(value = "/health_check")
     public String healthCheck() {
+//        stringRedisTemplate.opsForValue().set("", "");
         return "ok";
     }
 
@@ -126,26 +149,54 @@ public class ZuulApplication extends SpringBootServletInitializer implements Emb
 
     @Bean
     InitializingBean setRedisData() throws FactoryBeanNotInitializedException {
-        Map admin = Collections.unmodifiableMap(Stream.of(
-                new AbstractMap.SimpleEntry<>("school_r", "school read"),
-                new AbstractMap.SimpleEntry<>("school_rw", "school write"))
-                .collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue())));
-        Map roles = Collections.unmodifiableMap(Stream.of(
-                new AbstractMap.SimpleEntry<>("admin", admin))
-                .collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue())));
-        List roleList = Arrays.asList("a=1", "b=2");
-        RAdmin rAdmin = RAdmin.builder().id(SystemConfig.R_ROLES_KEY)
-                            .name("roles")
-                            .roles(roleList)
-                            .build();
-        rAdminRepository.save(rAdmin);
-        // A hash to store type
-        // A hash to store roles with url/methods
 
-        SystemConfig.ROLES = rAdminRepository.findOne(SystemConfig.R_ROLES_KEY);
-        if (SystemConfig.ROLES == null) {
-            throw new FactoryBeanNotInitializedException("Role list is null");
+//        Templdate redis
+//        Map admin = Collections.unmodifiableMap(Stream.of(
+//                new AbstractMap.SimpleEntry<>("school_r", "school read"),
+//                new AbstractMap.SimpleEntry<>("school_rw", "school write"))
+//                .collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue())));
+//        Map roles = Collections.unmodifiableMap(Stream.of(
+//                new AbstractMap.SimpleEntry<>("admin", admin))
+//                .collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue())));
+//        List roleList = Arrays.asList("a=1", "b=2");
+//        RAdmin rAdmin = RAdmin.builder().id(SystemConfig.R_ROLES_KEY)
+//                            .name("roles")
+//                            .roles(roleList)
+//                            .build();
+//        rAdminRepository.save(rAdmin);
+//        // A hash to store type
+//        // A hash to store roles with url/methods
+//
+//        SystemConfig.ROLES = rAdminRepository.findOne(SystemConfig.R_ROLES_KEY);
+//        if (SystemConfig.ROLES == null) {
+//            throw new FactoryBeanNotInitializedException("Role list is null");
+//        }
+
+//        Read/Write from redis directly
+//        PermissionInfo p = PermissionInfo.builder().permisionKey("key").permissionName("name").description("de").build();
+//        Map<String, PermissionInfo> mp = new HashMap<String, PermissionInfo>();
+//        Map<String, Map<String, PermissionInfo>> mp2 = new HashMap<String, Map<String, PermissionInfo>>();
+//        mp.put("users_post", p);
+//        mp2.put("admin", mp);
+//        RoleDicts test = RoleDicts.builder().roles(mp2).build();
+
+//        Gson gson = new GsonBuilder().create();
+//        Gson gson = new Gson();
+
+//        stringRedisTemplate.opsForValue().set(SystemConfig.ROLE_DICTS_KEY, gson.toJson(test));
+
+        String permissionsSwitch = stringRedisTemplate.opsForValue().get(SystemConfig.PERMISSION_SWITCH_KEY);
+        SystemConfig.PERMISSION_SWITCH = Boolean.parseBoolean(permissionsSwitch);
+        LOGGER.info("enable permission check...", SystemConfig.PERMISSION_SWITCH);
+
+        String permissionsDict = stringRedisTemplate.opsForValue().get(SystemConfig.ROLE_DICTS_KEY);
+        if (permissionsDict.isEmpty()) {
+            throw new ExceptionInInitializerError("Can not get permission data from redis");
         }
+
+        SystemConfig.ROLE_DICTS = gson.fromJson(permissionsDict, RoleDicts.class);
+        LOGGER.info("get permission dict from redis...", permissionsDict);
+
         return () -> {};
     }
 }

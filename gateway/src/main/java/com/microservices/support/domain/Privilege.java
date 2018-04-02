@@ -1,4 +1,5 @@
-package com.oauth.services.domain;
+package com.microservices.support.domain;
+
 
 import lombok.*;
 
@@ -37,4 +38,5 @@ public class Privilege {
 
     @Column(name = "create_time")
     private Date createTime;
+
 }

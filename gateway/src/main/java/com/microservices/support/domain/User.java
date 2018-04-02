@@ -1,5 +1,6 @@
 package com.microservices.support.domain;
 
+import lombok.*;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
@@ -8,6 +9,11 @@ import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class User {
 
     @Id
@@ -40,13 +46,12 @@ public class User {
 
     private String type;
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_privilege",
+            joinColumns = @JoinColumn(name = "username"),
+            inverseJoinColumns = @JoinColumn(name = "privilegeid"))
+    private Set<Privilege> privileges;
 
     @Size(min = 0, max = 100)
     @Column(name = "activationkey")
@@ -55,78 +60,6 @@ public class User {
     @Size(min = 0, max = 100)
     @Column(name = "resetpasswordkey")
     private String resetPasswordKey;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public boolean isActivated() {
-        return activated;
-    }
-
-    public void setActivated(boolean activated) {
-        this.activated = activated;
-    }
-
-    public String getActivationKey() {
-        return activationKey;
-    }
-
-    public void setActivationKey(String activationKey) {
-        this.activationKey = activationKey;
-    }
-
-    public String getResetPasswordKey() {
-        return resetPasswordKey;
-    }
-
-    public void setResetPasswordKey(String resetPasswordKey) {
-        this.resetPasswordKey = resetPasswordKey;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getSchoolId() {
-        return schoolId;
-    }
-
-    public void setSchoolId(Long schoolId) {
-        this.schoolId = schoolId;
-    }
-
-    public String getSchoolName() {
-        return schoolName;
-    }
-
-    public void setSchoolName(String schoolName) {
-        this.schoolName = schoolName;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -138,22 +71,6 @@ public class User {
         if (!username.equals(user.username)) return false;
 
         return true;
-    }
-
-    public Integer getLoadCounter() {
-        return loadCounter;
-    }
-
-    public void setLoadCounter(Integer loadCounter) {
-        this.loadCounter = loadCounter;
-    }
-
-    public Timestamp getLastLoad() {
-        return lastLoad;
-    }
-
-    public void setLastLoad(Timestamp lastLoad) {
-        this.lastLoad = lastLoad;
     }
 
     @Override
