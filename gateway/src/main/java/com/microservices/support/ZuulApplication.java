@@ -13,6 +13,7 @@ import com.microservices.support.filters.RouteFilter;
 import com.microservices.support.repository.RAdminRepository;
 import com.microservices.support.workers.AsyncExecutor;
 import com.microservices.support.workers.AsyncTask;
+import com.microservices.support.workers.tasks.UserActionLogTask;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.FactoryBeanNotInitializedException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.autoconfigure.web.ErrorController;
@@ -34,6 +36,7 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.cloud.netflix.zuul.filters.ProxyRequestHelper;
 import org.springframework.cloud.netflix.zuul.filters.ZuulProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -62,15 +65,15 @@ public class ZuulApplication extends SpringBootServletInitializer implements Emb
         new SpringApplicationBuilder(ZuulApplication.class).web(true).run(args);
     }
 
-    @Autowired
-    private RAdminRepository rAdminRepository;
+//    @Autowired
+//    private RAdminRepository rAdminRepository;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
     private static Gson gson = new Gson();
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AsyncTask.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ZuulApplication.class);
 
     @Override
     public void customize(ConfigurableEmbeddedServletContainer container) {
@@ -185,17 +188,37 @@ public class ZuulApplication extends SpringBootServletInitializer implements Emb
 
 //        stringRedisTemplate.opsForValue().set(SystemConfig.ROLE_DICTS_KEY, gson.toJson(test));
 
+        // Get permission enable switch
         String permissionsSwitch = stringRedisTemplate.opsForValue().get(SystemConfig.PERMISSION_SWITCH_KEY);
         SystemConfig.PERMISSION_SWITCH = Boolean.parseBoolean(permissionsSwitch);
         LOGGER.info("enable permission check...", SystemConfig.PERMISSION_SWITCH);
 
+        // Get permission dicts
         String permissionsDict = stringRedisTemplate.opsForValue().get(SystemConfig.ROLE_DICTS_KEY);
-        if (permissionsDict.isEmpty()) {
+        if (SystemConfig.PERMISSION_SWITCH && (permissionsDict == null || permissionsDict.isEmpty() ) ) {
             throw new ExceptionInInitializerError("Can not get permission data from redis");
         }
 
         SystemConfig.ROLE_DICTS = gson.fromJson(permissionsDict, RoleDicts.class);
         LOGGER.info("get permission dict from redis...", permissionsDict);
+
+        // Get white list of user type
+        String permissionsWhiteType = stringRedisTemplate.opsForValue().get(SystemConfig.ROLE_WHITE_TYPE_KEY);
+        if (permissionsWhiteType != null && !permissionsWhiteType.equals("")) {
+            SystemConfig.ROLE_WHITE_TYPE = Arrays.asList(permissionsWhiteType.split(","));
+        }
+
+        // Get white list of api
+        String permissionsWhiteAPI = stringRedisTemplate.opsForValue().get(SystemConfig.ROLE_WHITE_API_KEY);
+        if (permissionsWhiteAPI != null && !permissionsWhiteAPI.equals("")) {
+            SystemConfig.ROLE_WHITE_API = Arrays.asList(permissionsWhiteAPI.split(","));
+        }
+
+        // Get white list of username
+        String permissionsWhiteUser = stringRedisTemplate.opsForValue().get(SystemConfig.ROLE_WHITE_USER_KEY);
+        if (permissionsWhiteUser != null && !permissionsWhiteUser.equals("")) {
+            SystemConfig.ROLE_WHITE_USER = Arrays.asList(permissionsWhiteUser.split(","));
+        }
 
         return () -> {};
     }

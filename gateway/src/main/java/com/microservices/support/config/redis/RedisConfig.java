@@ -2,6 +2,7 @@ package com.microservices.support.config.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,18 +25,33 @@ public class RedisConfig {
 //        return new JedisConnectionFactory(new RedisClusterConfiguration(clusterProperties.getNodes()));
 //    }
 
+    @Value("${spring.redis.host:localhost}")
+    private String redisHost;
+
+    @Value("${spring.redis.port:6379}")
+    private Integer redisPort;
+
+    @Value("${spring.redis.database:0}")
+    private Integer redisDB;
+
     @Bean
     @Primary
     JedisConnectionFactory jedisConnectionFactory() {
-        return new JedisConnectionFactory();
+        JedisConnectionFactory jedisConFactory
+                = new JedisConnectionFactory();
+        jedisConFactory.setHostName(redisHost);
+        jedisConFactory.setPort(redisPort);
+        jedisConFactory.setDatabase(redisDB);
+        return jedisConFactory;
     }
 
     @Bean(name = "cacheRedisConnFactory")
     JedisConnectionFactory jedisConnectionFactory2() {
         JedisConnectionFactory jedisConFactory
                 = new JedisConnectionFactory();
-        jedisConFactory.setHostName("localhost");
-        jedisConFactory.setPort(6379);
+        jedisConFactory.setHostName(redisHost);
+        jedisConFactory.setPort(redisPort);
+        jedisConFactory.setDatabase(redisDB);
         return jedisConFactory;
     }
 

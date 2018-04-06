@@ -29,6 +29,7 @@ spring:
 
   redis:
     host: localhost
+#    database: 1
   cloud:
     loadbalancer:
       retry:
@@ -178,13 +179,14 @@ spring:
     show_sql: true
     hibernate:
       ddl-auto: none
+  redis:
+    host: 10.16.156.36
+    port: 6379
+    database: 0
   cloud:
     loadbalancer:
       retry:
         enabled: true
-
-  redis:
-    host: localhost
 
 eureka:
   client:

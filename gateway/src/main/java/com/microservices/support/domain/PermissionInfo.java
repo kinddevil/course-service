@@ -12,5 +12,7 @@ public class PermissionInfo {
 
     String permissionName;
 
+    Boolean precise;
+
     String description;
 }
