@@ -191,7 +191,7 @@ public class ZuulApplication extends SpringBootServletInitializer implements Emb
         // Get permission enable switch
         String permissionsSwitch = stringRedisTemplate.opsForValue().get(SystemConfig.PERMISSION_SWITCH_KEY);
         SystemConfig.PERMISSION_SWITCH = Boolean.parseBoolean(permissionsSwitch);
-        LOGGER.info("enable permission check...", SystemConfig.PERMISSION_SWITCH);
+        LOGGER.info("enable permission check..." + SystemConfig.PERMISSION_SWITCH.toString());
 
         // Get permission dicts
         String permissionsDict = stringRedisTemplate.opsForValue().get(SystemConfig.ROLE_DICTS_KEY);
@@ -200,7 +200,7 @@ public class ZuulApplication extends SpringBootServletInitializer implements Emb
         }
 
         SystemConfig.ROLE_DICTS = gson.fromJson(permissionsDict, RoleDicts.class);
-        LOGGER.info("get permission dict from redis...", permissionsDict);
+        LOGGER.info("get permission dict from redis, is empty?..." + (permissionsDict == null || permissionsDict.isEmpty()));
 
         // Get white list of user type
         String permissionsWhiteType = stringRedisTemplate.opsForValue().get(SystemConfig.ROLE_WHITE_TYPE_KEY);

@@ -91,48 +91,50 @@ public class RequestFilter extends ZuulFilter {
         // TODO remove test only function
 //        refreshRedisKeys();
 
-        if (principal != null && principal.getName() != null && SystemConfig.PERMISSION_SWITCH) {
-            // Only admin will do this check
-            User user = userRepository.findByUsernameCaseInsensitive(request.getUserPrincipal().getName());
-            log.info(user.getPrivileges().toArray().toString());
-
-            // Request like /api/advertising/v1/publicads, take "advertising-publicads"
-            String method = request.getMethod();
-            String api = request.getRequestURI();
-            // Get api permission from request: eg - get_/api/users/v1/teacher
-            String permissionKey = (method + "_" + api).toLowerCase();
-
-            UserAction.UserActionBuilder userAction = UserAction.builder()
-                    .userName(user.getUsername())
-                    .name(user.getName())
-                    .apiMethod(method)
-                    .apiName(api)
-                    .userType(user.getType())
-                    .schoolID(user.getSchoolId())
-                    .schoolName(user.getSchoolName())
-                    .userType(user.getType())
-                    .actionTime(currentTime);
+        if (principal != null && principal.getName() != null) {
 
             UserActionLogTask userActionLogTask = applicationContext.getBean(UserActionLogTask.class);
 
-            // like school_admin
-            if (SystemConfig.ROLE_WHITE_USER != null && SystemConfig.ROLE_WHITE_USER.contains(user.getUsername())
-                    || SystemConfig.ROLE_WHITE_TYPE != null && SystemConfig.ROLE_WHITE_TYPE.contains(user.getType())
-                    // api white list - get prefix
-                    || SystemConfig.ROLE_WHITE_API != null && containsPrefix(SystemConfig.ROLE_WHITE_API, permissionKey)) {
-                needCheck = false;
-                isGranted = true;
-                reason = "in white list";
-                asyncExecutor.submit(userActionLogTask.BuildUser(
-                    userAction
-                        .message(reason)
-                        .status(isGranted)
-                        .build()
-                ));
-                return null;
-            }
+            if (SystemConfig.PERMISSION_SWITCH) {
+                // Only admin will do this check
+                User user = userRepository.findByUsernameCaseInsensitive(request.getUserPrincipal().getName());
+                log.info(user.getPrivileges().toArray().toString());
 
-            // 0 is "" - /api/advertising/v1/publicads
+                // Request like /api/advertising/v1/publicads, take "advertising-publicads"
+                String method = request.getMethod();
+                String api = request.getRequestURI();
+                // Get api permission from request: eg - get_/api/users/v1/teacher
+                String permissionKey = (method + "_" + api).toLowerCase();
+
+                UserAction.UserActionBuilder userAction = UserAction.builder()
+                        .userName(user.getUsername())
+                        .name(user.getName())
+                        .apiMethod(method)
+                        .apiName(api)
+                        .userType(user.getType())
+                        .schoolID(user.getSchoolId())
+                        .schoolName(user.getSchoolName())
+                        .userType(user.getType())
+                        .actionTime(currentTime);
+
+                // like school_admin
+                if (SystemConfig.ROLE_WHITE_USER != null && SystemConfig.ROLE_WHITE_USER.contains(user.getUsername())
+                        || SystemConfig.ROLE_WHITE_TYPE != null && SystemConfig.ROLE_WHITE_TYPE.contains(user.getType())
+                        // api white list - get prefix
+                        || SystemConfig.ROLE_WHITE_API != null && containsPrefix(SystemConfig.ROLE_WHITE_API, permissionKey)) {
+                    needCheck = false;
+                    isGranted = true;
+                    reason = "in white list";
+                    asyncExecutor.submit(userActionLogTask.BuildUser(
+                            userAction
+                                    .message(reason)
+                                    .status(isGranted)
+                                    .build()
+                    ));
+                    return null;
+                }
+
+                // 0 is "" - /api/advertising/v1/publicads
 //            String[] apiPath = api.split("/");
 //            if (apiPath.length < 4) {
 //                reason = "unknown api";
@@ -147,88 +149,103 @@ public class RequestFilter extends ZuulFilter {
 //                return null;
 //            }
 
-            Map<String, PermissionInfo> typePermission = SystemConfig.ROLE_DICTS.getRoles().get(user.getType());
-            if (typePermission == null) {
-                reason = "unknown api with unknown user type";
-                isGranted = false;
-                asyncExecutor.submit(userActionLogTask.BuildUser(
-                    userAction
-                        .message(reason)
-                        .status(isGranted)
-                        .build()
-                ));
-                setErrorResponse(ctx, reason);
-                return null;
-            }
-            // get by prefix
-            PermissionInfo needPermission = getPermissionInfoByPrefix(typePermission, permissionKey);
-            if (needPermission == null) {
-                reason = "unknown api with unknown permission";
-                isGranted = false;
-                asyncExecutor.submit(userActionLogTask.BuildUser(
-                    userAction
-                        .message(reason)
-                        .status(isGranted)
-                        .build()
-                ));
-                setErrorResponse(ctx, reason);
-                return null;
-            }
-            String permissionStr = needPermission.getPermisionKey();
-            String permissionName = needPermission.getPermissionName();
-            String permissionDes = needPermission.getDescription();
+                Map<String, PermissionInfo> typePermission = SystemConfig.ROLE_DICTS.getRoles().get(user.getType());
+                if (typePermission == null) {
+                    reason = "unknown api with unknown user type";
+                    isGranted = false;
+                    asyncExecutor.submit(userActionLogTask.BuildUser(
+                            userAction
+                                    .message(reason)
+                                    .status(isGranted)
+                                    .build()
+                    ));
+                    setErrorResponse(ctx, reason);
+                    return null;
+                }
+                // get by prefix
+                PermissionInfo needPermission = getPermissionInfoByPrefix(typePermission, permissionKey);
+                if (needPermission == null) {
+                    reason = "unknown api with unknown permission";
+                    isGranted = false;
+                    asyncExecutor.submit(userActionLogTask.BuildUser(
+                            userAction
+                                    .message(reason)
+                                    .status(isGranted)
+                                    .build()
+                    ));
+                    setErrorResponse(ctx, reason);
+                    return null;
+                }
+                String permissionStr = needPermission.getPermisionKey();
+                String permissionName = needPermission.getPermissionName();
+                String permissionDes = needPermission.getDescription();
 
-            // username_method_api
-            String rPermissionKey = user.getUsername() + "_" + permissionKey;
-            RUserPermission rUserPermission = rUserPermissionRepository.findOne(rPermissionKey);
-            if (rUserPermission != null) {
-                isGranted = rUserPermission.getPermission();
-            } else {
-                Set<Privilege> userRoles = user.getPrivileges();
-                Set<String> userPermissions = new HashSet<String>();
-                for (Privilege privilege : userRoles) {
-                    String[] permissions = privilege.getPermissionIds().split(",");
-                    for (String permit : permissions) {
-                        if (permit.trim().equalsIgnoreCase(permissionStr)) { // has permission
-                            isGranted = true;
-                            break;
+                // username_method_api
+                String rPermissionKey = user.getUsername() + "_" + permissionKey;
+                RUserPermission rUserPermission = rUserPermissionRepository.findOne(rPermissionKey);
+                if (rUserPermission != null) {
+                    isGranted = rUserPermission.getPermission();
+                } else {
+                    Set<Privilege> userRoles = user.getPrivileges();
+                    Set<String> userPermissions = new HashSet<String>();
+                    for (Privilege privilege : userRoles) {
+                        String[] permissions = privilege.getPermissionIds().split(",");
+                        for (String permit : permissions) {
+                            if (permit.trim().equalsIgnoreCase(permissionStr)) { // has permission
+                                isGranted = true;
+                                break;
+                            }
                         }
                     }
+                    rUserPermissionRepository.save(
+                            RUserPermission.builder()
+                                    .id(rPermissionKey)
+                                    .permission(isGranted)
+                                    .expiration(CACHE_EXPIRE_TTL)
+                                    .build()
+                    );
                 }
-                rUserPermissionRepository.save(
-                    RUserPermission.builder()
-                        .id(rPermissionKey)
-                        .permission(isGranted)
-                        .expiration(CACHE_EXPIRE_TTL)
-                        .build()
-                );
-            }
 
-            if (isGranted) {
+                if (isGranted) {
+                    asyncExecutor.submit(userActionLogTask.BuildUser(
+                            userAction
+                                    .message(reason)
+                                    .status(isGranted)
+                                    .actionName(permissionName)
+                                    .content(permissionDes)
+                                    .build()
+                    ));
+                } else {
+                    reason = "user do not have permission";
+                    asyncExecutor.submit(userActionLogTask.BuildUser(
+                            userAction
+                                    .message(reason)
+                                    .status(isGranted)
+                                    .actionName(permissionName)
+                                    .content(permissionDes)
+                                    .build()
+                    ));
+                    setErrorResponse(ctx, reason);
+                    return null;
+                }
+            } else { // Log operation
+                String method = request.getMethod();
+                String api = request.getRequestURI();
+                // TODO log user asyc for query db
+                UserAction.UserActionBuilder userAction = UserAction.builder()
+                    .userName(principal.getName())
+                    .apiMethod(method)
+                    .apiName(api)
+                    .actionTime(currentTime);
                 asyncExecutor.submit(userActionLogTask.BuildUser(
-                    userAction
-                        .message(reason)
-                        .status(isGranted)
-                        .actionName(permissionName)
-                        .content(permissionDes)
-                        .build()
+                        userAction
+                                .message(reason)
+                                .status(isGranted)
+                                .build()
                 ));
-            } else {
-                reason = "user do not have permission";
-                asyncExecutor.submit(userActionLogTask.BuildUser(
-                    userAction
-                        .message(reason)
-                        .status(isGranted)
-                        .actionName(permissionName)
-                        .content(permissionDes)
-                        .build()
-                ));
-                setErrorResponse(ctx, reason);
-                return null;
             }
-
         } else {
-            // Do not need log if switch is disabled or for anonymous user
+            // Do not need log for anonymous user
         }
 
 //        ctx.addZuulRequestHeader("Authorization", request.getHeader("Authorization"));
