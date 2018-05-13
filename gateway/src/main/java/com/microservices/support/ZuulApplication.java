@@ -24,17 +24,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
-import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.boot.web.server.WebServerFactory;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.cloud.netflix.zuul.filters.ProxyRequestHelper;
 import org.springframework.cloud.netflix.zuul.filters.ZuulProperties;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -59,7 +59,8 @@ import java.util.stream.Stream;
 @EnableDiscoveryClient
 @EnableFeignClients
 //@EnableOAuth2Sso
-public class ZuulApplication extends SpringBootServletInitializer implements EmbeddedServletContainerCustomizer, ErrorController {
+//public class ZuulApplication extends SpringBootServletInitializer implements EmbeddedServletContainerCustomizer, ErrorController { // For 1.5.x
+public class ZuulApplication extends SpringBootServletInitializer implements WebServerFactoryCustomizer, ErrorController {
 	
     public static void main(String[] args) {
         new SpringApplicationBuilder(ZuulApplication.class).web(true).run(args);
@@ -76,7 +77,7 @@ public class ZuulApplication extends SpringBootServletInitializer implements Emb
     private static final Logger LOGGER = LoggerFactory.getLogger(ZuulApplication.class);
 
     @Override
-    public void customize(ConfigurableEmbeddedServletContainer container) {
+    public void customize(WebServerFactory factory) {
 
     }
 
@@ -222,4 +223,5 @@ public class ZuulApplication extends SpringBootServletInitializer implements Emb
 
         return () -> {};
     }
+
 }

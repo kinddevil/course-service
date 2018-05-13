@@ -182,7 +182,7 @@ public class RequestFilter extends ZuulFilter {
 
                 // username_method_api
                 String rPermissionKey = user.getUsername() + "_" + permissionKey;
-                RUserPermission rUserPermission = rUserPermissionRepository.findOne(rPermissionKey);
+                RUserPermission rUserPermission = rUserPermissionRepository.findById(rPermissionKey).get();
                 if (rUserPermission != null) {
                     isGranted = rUserPermission.getPermission();
                 } else {
