@@ -20,9 +20,10 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
-apply plugin: 'application'
 apply plugin: 'docker'
 apply plugin: "io.spring.dependency-management"
+apply plugin: 'application'
+mainClassName = 'com.microservices.support.ZuulApplication'
 
 jar {
     baseName = 'course-service-gateway'
@@ -123,10 +124,11 @@ docker {
 // gradle buildDocker -Ppush
 task buildDocker(type: Docker, dependsOn: build) {
     push = project.hasProperty('push')
-    addFile {
-        from jar
-        rename {'app.jar'}
-    }
+//    addFile {
+//        from jar
+//        rename {'app.jar'}
+//    }
+    addFile("${project.projectDir}/build/libs/${project.name}-${version}.jar", "app.jar")
     setEnvironment('_JAVA_OPTIONS','-Dspring.profiles.active=docker')
     defaultCommand(['java', '-jar', 'app.jar'])
 }

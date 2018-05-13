@@ -13,21 +13,26 @@ buildscript {
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
         classpath "io.spring.gradle:dependency-management-plugin:1.0.5.RELEASE"
-        classpath 'se.transmode.gradle:gradle-docker:1.2'
+        classpath "se.transmode.gradle:gradle-docker:1.2"
+//        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
+apply plugin: 'maven'
 apply plugin: 'org.springframework.boot'
-apply plugin: 'application'
 apply plugin: 'docker'
 apply plugin: "io.spring.dependency-management"
+//apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'application'
+mainClassName = 'com.discovery.DiscoveryApplication'
 
 jar {
     baseName = 'course-service-discovery'
     version = '0.0.1-SNAPSHOT'
+    enabled = true
 }
 
 sourceCompatibility = 1.8
@@ -71,19 +76,12 @@ task wrapper(type: Wrapper) {
 task fatJar(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'Gradle Jar File Example',
-                'Implementation-Version': version
-//                'Main-Class': project.group + '.Main'
+                'Implementation-Version': version,
+                'Main-Class': project.group + '.Main'
     }
     baseName = project.name + '-all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
-}
-
-buildscript {
-    repositories { jcenter() }
-    dependencies {
-        classpath 'se.transmode.gradle:gradle-docker:1.2'
-    }
 }
 
 distDocker {
@@ -94,16 +92,22 @@ distDocker {
 
 docker {
     group = 'coursemnt'
-    maintainer = 'Someone <someone@gmail.com>'
+    maintainer = 'David <david@gmail.com>'
     baseImage = 'java:8'
 }
 
+//println  "Root project:   ${project.rootProject}";
+//println  "rootDir:      ${project.rootDir}"
+//println  "projectDir:   ${project.projectDir}";
+//println  "project dir:  ${System.getProperty("user.dir")}";
+
 task buildDocker(type: Docker, dependsOn: build) {
     push = project.hasProperty('push')
-    addFile {
-        from jar
-        rename {'app.jar'}
-    }
+//    addFile {
+//        from jar
+//        rename {'app.jar'}
+//    }
+    addFile("${project.projectDir}/build/libs/${project.name}-${version}.jar", "app.jar")
     setEnvironment('_JAVA_OPTIONS','-Dspring.profiles.active=docker')
     defaultCommand(['java', '-jar', 'app.jar'])
 }

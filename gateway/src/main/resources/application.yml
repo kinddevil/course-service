@@ -149,7 +149,8 @@ security:
     resource:
       userInfoUri: http://localhost:9191/uua/v1/user
 #      preferTokenInfo: false
-      filter-order: 3
+#   depracated in Springboot 2
+#      filter-order: 3
 #  sessions: ALWAYS
 #  headers:
 #    frame: true
