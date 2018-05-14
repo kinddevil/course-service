@@ -110,4 +110,4 @@ eureka:
       defaultZone: http://10.16.156.36:8761/eureka/
   instance:
     prefer-ip-address: true
-    ip-address: 10.16.156.36
+    ip-address: ${ip:10.16.156.36}

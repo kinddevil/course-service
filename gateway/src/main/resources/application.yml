@@ -298,6 +298,6 @@ security:
     resource:
       userInfoUri: http://10.16.156.36:9191/uua/v1/user
 #      preferTokenInfo: false
-      filter-order: 3
+#      filter-order: 3
 
 #  sessions: ALWAYS
