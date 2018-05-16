@@ -290,13 +290,13 @@ zuul:
 security:
   oauth2:
     client:
-      accessTokenUri: http://10.16.156.36:9191/uua/v1/oauth/token
-      userAuthorizationUri: http://10.16.156.36:9191/uua/v1/oauth/authorize
+      accessTokenUri: http://${oauthip:10.16.156.36}:${oauthport:9191}/uua/v1/oauth/token
+      userAuthorizationUri: http://${oauthip:10.16.156.36}:${oauthport:9191}/uua/v1/oauth/authorize
       clientId: base_course_app
       clientSecret: secret
       client-authentication-scheme: header
     resource:
-      userInfoUri: http://10.16.156.36:9191/uua/v1/user
+      userInfoUri: http://${oauthip:10.16.156.36}:${oauthport:9191}/uua/v1/user
 #      preferTokenInfo: false
 #      filter-order: 3
 

@@ -111,3 +111,4 @@ eureka:
   instance:
     prefer-ip-address: true
     ip-address: ${ip:10.16.156.36}
+    lease-renewal-interval-in-seconds: 20
