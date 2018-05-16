@@ -4,8 +4,8 @@ import com.oauth.services.security.CustomAuthenticationEntryPoint;
 import com.oauth.services.security.CustomLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
-import org.springframework.boot.bind.RelaxedPropertyResolver;
+//import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+//import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -88,7 +88,7 @@ public class OAuth2Configuration {
 //        private static final String PROP_SECRET = "secret";
 //        private static final String PROP_TOKEN_VALIDITY_SECONDS = "tokenValidityInSeconds";
 
-        private RelaxedPropertyResolver propertyResolver;
+//        private RelaxedPropertyResolver propertyResolver; # not supported in 2.0.0
 
         @Autowired
         private Environment env;
@@ -123,9 +123,17 @@ public class OAuth2Configuration {
             clients.jdbc(dataSource());
         }
 
+//        https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.0-Migration-Guide
+//        RelaxedPropertyResolver is no longer available as the Environment takes care of that automatically: env.getProperty("com.foo.my-bar") will find a com.foo.myBar property
+//          env.getProperty("com.foo.my-bar")
+//        @Override
+//        public void setEnvironment(Environment environment) {
+//            this.propertyResolver = new RelaxedPropertyResolver(environment, ENV_OAUTH);
+//        }
+
         @Override
         public void setEnvironment(Environment environment) {
-            this.propertyResolver = new RelaxedPropertyResolver(environment, ENV_OAUTH);
+
         }
 
 //        @Override
@@ -147,6 +155,7 @@ public class OAuth2Configuration {
             dataSource.setPassword(env.getProperty("spring.datasource.password"));
             return dataSource;
         }
+
     }
 
 }

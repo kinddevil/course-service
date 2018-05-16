@@ -14,10 +14,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.*;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
 
 import javax.ws.rs.HttpMethod;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Configuration
@@ -30,7 +33,28 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
 //        return new StandardPasswordEncoder();
+
         return new BCryptPasswordEncoder();
+
+//        String currentId = "pbkdf2.2019";
+//        Map<String, PasswordEncoder> encoders = new HashMap<>();
+//        encoders.put("bcrypt", new BCryptPasswordEncoder());
+//        encoders.put(currentId, new Pbkdf2PasswordEncoder(PBKDF2_2018_SECRET, PBKDF2_2018_ITERATIONS, PBKDF2_2018_HASH_WIDTH));
+//        encoders.put(currentId, new Pbkdf2PasswordEncoder());
+//        return new DelegatingPasswordEncoder(currentId, encoders);
+
+//        String idForEncode = "bcrypt";
+//        Map encoders = new HashMap<>();
+//        encoders.put(idForEncode, new BCryptPasswordEncoder());
+//        encoders.put("noop", NoOpPasswordEncoder.getInstance());
+//        encoders.put("pbkdf2", new Pbkdf2PasswordEncoder());
+//        encoders.put("scrypt", new SCryptPasswordEncoder());
+//        encoders.put("sha256", new StandardPasswordEncoder());
+
+//        PasswordEncoder passwordEncoder =
+//                new DelegatingPasswordEncoder(idForEncode, encoders);
+//        return passwordEncoder;
+
     }
 
     @Autowired

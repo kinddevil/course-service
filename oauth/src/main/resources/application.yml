@@ -6,7 +6,9 @@ security:
 
 server:
   port: 9191
-  contextPath: /uua/v1
+  servlet:
+    context-path: /uua/v1
+#  contextPath: /uua/v1
 
 spring:
   profiles:
@@ -37,10 +39,6 @@ spring:
     generate-ddl: false
     hibernate:
       ddl-auto: none
-
-server:
-  port: 9191
-  contextPath: /uua
 
 eureka:
   client:
