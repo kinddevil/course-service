@@ -22,6 +22,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -63,7 +64,8 @@ import java.util.stream.Stream;
 public class ZuulApplication extends SpringBootServletInitializer implements WebServerFactoryCustomizer, ErrorController {
 	
     public static void main(String[] args) {
-        new SpringApplicationBuilder(ZuulApplication.class).web(true).run(args);
+//        new SpringApplicationBuilder(ZuulApplication.class).web(true).run(args);
+        SpringApplication.run(ZuulApplication.class, args);
     }
 
 //    @Autowired
