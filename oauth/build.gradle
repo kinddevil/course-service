@@ -117,10 +117,11 @@ docker {
 
 task buildDocker(type: Docker, dependsOn: build) {
     push = project.hasProperty('push')
-    addFile {
-        from jar
-        rename {'app.jar'}
-    }
+//    addFile {
+//        from jar
+//        rename {'app.jar'}
+//    }
+    addFile("${project.projectDir}/build/libs/${project.name}-${version}.jar", "app.jar")
     setEnvironment('_JAVA_OPTIONS','-Dspring.profiles.active=docker')
     defaultCommand(['java', '-jar', 'app.jar'])
 }
