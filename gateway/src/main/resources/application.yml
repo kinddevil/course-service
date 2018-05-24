@@ -135,6 +135,10 @@ zuul:
       path: /expenses/**
       serviceId: cas-expenses
       stripPrefix: false
+    tasks:
+      path: /tasks/**
+      serviceId: cas-tasks
+      stripPrefix: false
   prefix: /api
   whitelist: /health_check,/uua/v*/login,/uua/v*/baseinfo,/uua/v*/oauth/token,/uua/v*/oauth/authorize,/uua/v*/oauth/confirm_access,/advertising/v*/publicads
   host:
@@ -292,6 +296,10 @@ zuul:
     expenses:
       path: /expenses/**
       serviceId: cas-expenses
+      stripPrefix: false
+    tasks:
+      path: /tasks/**
+      serviceId: cas-tasks
       stripPrefix: false
   prefix: /api
   whitelist: /health_check,/uua/v*/login,/uua/v*/baseinfo,/uua/v*/oauth/token,/uua/v*/oauth/authorize,/uua/v*/oauth/confirm_access,/advertising/v*/publicads
