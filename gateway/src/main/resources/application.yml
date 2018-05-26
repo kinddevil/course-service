@@ -208,6 +208,7 @@ eureka:
       defaultZone: http://10.16.156.36:8761/eureka/
   instance:
     prefer-ip-address: true
+#    lease-renewal-interval-in-seconds:
 #    ip-address:
 
 
