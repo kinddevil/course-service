@@ -142,6 +142,25 @@ zuul:
     registrations:
       path: /registrations/**
       serviceId: cas-registrations
+    statistics:
+      path: /statistics/**
+      serviceId: cas-statistics
+      stripPrefix: false
+    preselects:
+      path: /preselects/**
+      serviceId: cas-preselects
+      stripPrefix: false
+    appeals:
+      path: /appeals/**
+      serviceId: cas-appeals
+      stripPrefix: false
+    teachers:
+      path: /teachers/**
+      serviceId: cas-teachers
+      stripPrefix: false
+    students:
+      path: /students/**
+      serviceId: cas-students
       stripPrefix: false
   prefix: /api
   whitelist: /health_check,/uua/v*/login,/uua/v*/baseinfo,/uua/v*/oauth/token,/uua/v*/oauth/authorize,/uua/v*/oauth/confirm_access,/advertising/v*/publicads
@@ -309,6 +328,25 @@ zuul:
     registrations:
       path: /registrations/**
       serviceId: cas-registrations
+    statistics:
+      path: /statistics/**
+      serviceId: cas-statistics
+      stripPrefix: false
+    preselects:
+      path: /preselects/**
+      serviceId: cas-preselects
+      stripPrefix: false
+    appeals:
+      path: /appeals/**
+      serviceId: cas-appeals
+      stripPrefix: false
+    teachers:
+      path: /teachers/**
+      serviceId: cas-teachers
+      stripPrefix: false
+    students:
+      path: /students/**
+      serviceId: cas-students
       stripPrefix: false
   prefix: /api
   whitelist: /health_check,/uua/v*/login,/uua/v*/baseinfo,/uua/v*/oauth/token,/uua/v*/oauth/authorize,/uua/v*/oauth/confirm_access,/advertising/v*/publicads
