@@ -142,6 +142,7 @@ zuul:
     registrations:
       path: /registrations/**
       serviceId: cas-registrations
+      stripPrefix: false
     statistics:
       path: /statistics/**
       serviceId: cas-statistics
@@ -328,6 +329,7 @@ zuul:
     registrations:
       path: /registrations/**
       serviceId: cas-registrations
+      stripPrefix: false
     statistics:
       path: /statistics/**
       serviceId: cas-statistics
