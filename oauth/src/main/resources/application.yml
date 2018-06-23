@@ -61,6 +61,7 @@ spring:
        initial-size: 2
        max-total: 10
        pool-prepared-statements: true
+#     initialization-mode: always
 #         url: jdbc:mysql://localhost:3306/db
 #         driver-class-name: com.mysql.jdbc.Driver
 #         username: user
@@ -70,6 +71,8 @@ spring:
     show_sql: true
     hibernate:
       ddl-auto: none
+#      ddl-auto: create
+#    generate-ddl: true
 
 eureka:
   client:

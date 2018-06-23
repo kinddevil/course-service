@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 //import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 //import org.springframework.boot.bind.RelaxedPropertyResolver;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -93,9 +94,17 @@ public class OAuth2Configuration {
         @Autowired
         private Environment env;
 
+        @Autowired
+        private DataSource dataSource;
+
+//        @Bean
+//        public TokenStore tokenStore() {
+//            return new JdbcTokenStore(dataSource());
+//        }
+
         @Bean
         public TokenStore tokenStore() {
-            return new JdbcTokenStore(dataSource());
+            return new JdbcTokenStore(dataSource);
         }
 
         @Autowired
@@ -120,7 +129,9 @@ public class OAuth2Configuration {
 //                    .authorizedGrantTypes("password", "authorization_code", "refresh_token", "implicit", "client_credentials")
 //                    .secret(propertyResolver.getProperty(PROP_SECRET))
 //                    .accessTokenValiditySeconds(propertyResolver.getProperty(PROP_TOKEN_VALIDITY_SECONDS, Integer.class, 1800));
-            clients.jdbc(dataSource());
+
+//            clients.jdbc(dataSource());
+            clients.jdbc(dataSource);
         }
 
 //        https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.0-Migration-Guide
@@ -141,20 +152,20 @@ public class OAuth2Configuration {
 //            oauthServer.realm(REALM+"/client");
 //        }
 
-        public DataSource dataSource() {
-//            DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-//            dataSourceBuilder.url(dbUrl);
-//            dataSourceBuilder.username(username);
-//            dataSourceBuilder.password(password);
-//            return dataSourceBuilder.build();
-
-            final DriverManagerDataSource dataSource = new DriverManagerDataSource();
-            dataSource.setDriverClassName(env.getProperty("spring.datasource.driverClassName"));
-            dataSource.setUrl(env.getProperty("spring.datasource.url"));
-            dataSource.setUsername(env.getProperty("spring.datasource.username"));
-            dataSource.setPassword(env.getProperty("spring.datasource.password"));
-            return dataSource;
-        }
+//        public DataSource dataSource() {
+////            DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+////            dataSourceBuilder.url(dbUrl);
+////            dataSourceBuilder.username(username);
+////            dataSourceBuilder.password(password);
+////            return dataSourceBuilder.build();
+//
+//            final DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//            dataSource.setDriverClassName(env.getProperty("spring.datasource.driverClassName"));
+//            dataSource.setUrl(env.getProperty("spring.datasource.url"));
+//            dataSource.setUsername(env.getProperty("spring.datasource.username"));
+//            dataSource.setPassword(env.getProperty("spring.datasource.password"));
+//            return dataSource;
+//        }
 
     }
 
