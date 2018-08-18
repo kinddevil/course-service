@@ -12,6 +12,8 @@ services:
      MYSQL_DATABASE: 'cas'
      MYSQL_USER: 'user'
      MYSQL_PASSWORD: 'pass'
+    volumes:
+     - "/opt/mysql/data:/var/lib/mysql"
   mq:
     image: "rabbitmq:latest"
     expose:
